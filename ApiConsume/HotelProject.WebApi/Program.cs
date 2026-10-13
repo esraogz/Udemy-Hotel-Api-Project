@@ -3,6 +3,7 @@ using HotelProject.BusinessLayer.Concrete;
 using HotelProject.DataAccessLayer.Abstract;
 using HotelProject.DataAccessLayer.Concrete;
 using HotelProject.DataAccessLayer.EntityFramework;
+using HotelProject.WebApi.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,15 @@ builder.Services.AddScoped<IServiceService, ServiceManager>();
 
 builder.Services.AddScoped<ISubscribeDal, EfSubscribeDal>();
 builder.Services.AddScoped<ISubscribeService, SubscribeManager>();
+
+builder.Services.AddScoped<IAboutDal, EfAboutDal>();
+builder.Services.AddScoped<IAboutService, AboutManager>();
+
+builder.Services.AddScoped<IBookingDal, EfBookingDal>();
+builder.Services.AddScoped<IBookingService, BookingManager>();
+
+builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
+
 
 builder.Services.AddCors(opt =>
 {
@@ -48,7 +58,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors("OtelApiCors");
 app.UseAuthorization();
 
 app.MapControllers();
