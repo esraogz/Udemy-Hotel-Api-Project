@@ -1,0 +1,37 @@
+﻿@model List<BookingApiViewModel.Property1>
+@{
+    Layout = null;
+    int count = 0;
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<div class="container">
+    <br /><br />
+    <form asp-action="Index" asp-controller="BookingByCity" method="post">
+        <label>Şehir Id'sini' Giriniz</label>
+        <input type="text" class="form-control" name="cityId" />
+        <br />
+        <button class="btn btn-primary">Şehir İçin Otel Bul</button>
+    </form>
+
+    <br />
+
+    <table class="table table-bordered">
+        <tr>
+            <th>#</th>
+            <th>Otel Adı</th>
+            <th>Otel Puanı</th>
+            <th>Otel Detaylar</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            count++;
+            <tr>
+                <td>@count</td>
+                <td>@item.name</td>
+                <td>@item.reviewScore</td>
+                <td><a href="#" class="btn btn-outline-dark">Detaylar</a></td>
+            </tr>
+        }
+    </table>
+</div>
