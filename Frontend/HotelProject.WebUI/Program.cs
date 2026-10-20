@@ -1,6 +1,10 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using HotelProject.DataAccessLayer.Concrete;
 using HotelProject.EntityLayer.Concrete;
+using HotelProject.WebUI.Dtos.GuestDto;
 using HotelProject.WebUI.Mapping;
+using HotelProject.WebUI.ValidationRules.GuestValidationRules;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser,AppRole>().AddEntityFrameworkStores<Context>();
 builder.Services.AddHttpClient();
+// Tüm validator sýnýflarýný (CreateGuestValidator vb.) içeren assembly üzerinden otomatik kaydeder:
+builder.Services.AddValidatorsFromAssemblyContaining<CreateGuestValidator>();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters(); // Ýsteðe baðlý: Client-side doðrulama için
+
+// MVC Controller servisi:
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(AutoMapperConfig));
 

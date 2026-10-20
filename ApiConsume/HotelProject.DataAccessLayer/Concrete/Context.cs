@@ -11,6 +11,22 @@ namespace HotelProject.DataAccessLayer.Concrete
             optionsBuilder.UseSqlServer("server=DESKTOP-RIL0VMV\\SQLEXPRESS;initial catalog=ApiDb;integrated security=true;trust server certificate=true");
         }
 
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<Room>().ToTable(tb =>
+            {
+                tb.HasTrigger("[Roomincrease]");
+                tb.HasTrigger("[RoomDecrease]");
+            });
+            builder.Entity<Guest>().ToTable(tb =>
+            {
+                tb.HasTrigger("[Guestincrease]");
+                tb.HasTrigger("[GuestDecrease]");
+            });
+        }
+
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Service> Services { get; set; }
         public DbSet<Staff> Staffs { get; set; }
