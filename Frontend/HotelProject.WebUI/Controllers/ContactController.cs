@@ -1,8 +1,8 @@
 ﻿using HotelProject.WebUI.Dtos.ContactDto;
+using HotelProject.WebUI.Dtos.SendMessageDto;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HotelProject.WebUI.Controllers
 {
@@ -29,6 +29,5 @@ namespace HotelProject.WebUI.Controllers
             await client.PostAsync("https://localhost:7291/api/Contact", stringContent);
             return RedirectToAction("Index", "Default");
         }
-        
     }
 }
