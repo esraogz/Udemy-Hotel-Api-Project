@@ -1,4 +1,5 @@
-﻿using HotelProject.WebUI.Models.Testimonial;
+﻿using HotelProject.WebUI.Dtos.TestimonialDto;
+using HotelProject.WebUI.Models.Testimonial;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -15,7 +16,7 @@ namespace HotelProject.WebUI.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<List<TestimonialViewModel>>(jsonData);
+                var values = JsonConvert.DeserializeObject<List<CreateTestimonialDto>>(jsonData);
                 return View(values);
             }
             return View();
@@ -28,10 +29,14 @@ namespace HotelProject.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTestimonial(AddTestimonialViewModel addTestimonialViewModel)
+        public async Task<IActionResult> AddTestimonial(CreateTestimonialDto createTestimonialDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(addTestimonialViewModel);
+            var jsonData = JsonConvert.SerializeObject(createTestimonialDto);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PostAsync("https://localhost:7291/api/Testimonial", content);
             if (responseMessage.IsSuccessStatusCode)
@@ -61,17 +66,21 @@ namespace HotelProject.WebUI.Controllers
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var value = JsonConvert.DeserializeObject<UpdateTestimonialViewModel>(jsonData);
+                var value = JsonConvert.DeserializeObject<UpdateTestimonialDto>(jsonData);
                 return View(value);
             }
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateTestimonial(UpdateTestimonialViewModel updateTestimonialViewModel)
+        public async Task<IActionResult> UpdateTestimonial(UpdateTestimonialDto updateTestimonialDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
             var client = _httpClientFactory.CreateClient();
-            var jsonData = JsonConvert.SerializeObject(updateTestimonialViewModel);
+            var jsonData = JsonConvert.SerializeObject(updateTestimonialDto);
             StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PutAsync("https://localhost:7291/api/Testimonial", content);
             if (responseMessage.IsSuccessStatusCode)

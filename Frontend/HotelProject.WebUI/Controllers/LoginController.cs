@@ -18,16 +18,18 @@ namespace HotelProject.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(LoginUserDto loginUserDto)
         {
+            if(!ModelState.IsValid)
+            {
+                return View(loginUserDto);
+            }
             var result = await _signInManager.PasswordSignInAsync(loginUserDto.UserName, loginUserDto.Password, false, false);
-            if (ModelState.IsValid)
+            if(!result.Succeeded)
             {
-                return RedirectToAction("Index", "Staff");
+                ModelState.AddModelError(string.Empty, "Kullanıcı adı veya şifre hatalı");
+                return View(loginUserDto);  //bu şekilde durdurmazsak yine return redirectToAction satırını ekrana getirir. Yanlış olsa bile girilen bilgiler.
             }
-            else
-            {
-                return View();
-            }
-            return View();
+            
+            return RedirectToAction("Index", "Staff");
         }
     }
 }

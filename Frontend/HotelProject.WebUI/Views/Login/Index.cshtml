@@ -56,6 +56,7 @@
                                         <input type="password" class="form-control" placeholder="Şifreniz" asp-for="Password">
                                         <span asp-validation-for="Password" class="text-danger"></span>
                                     </div>
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                     <button class="btn login-form__btn submit w-100">Giriş Yap</button>
                                 </form>
                                 <p class="mt-5 login-form__footer">Bir Hesabın Yok mu? <a href="/Register/Index/" class="text-primary">Kayıt Ol</a></p>
